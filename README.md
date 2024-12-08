@@ -40,3 +40,4 @@ CREATE TABLE redirects (
 3. Crediting the author is appreciated.
 
 Please remove all of my personal information by running `bun run delete`.
+# jdel-02
