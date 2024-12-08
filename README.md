@@ -41,3 +41,4 @@ CREATE TABLE redirects (
 
 Please remove all of my personal information by running `bun run delete`.
 # jdel-02
+# jdel-02
