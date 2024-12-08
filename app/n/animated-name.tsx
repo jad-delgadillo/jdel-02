@@ -1,9 +1,11 @@
-import { Link } from 'next-view-transitions';
+import { Link } from "next-view-transitions";
 
 export function AnimatedName() {
   return (
-    <Link href="/" className="flex mb-8 font-medium text-gray-400 fade-in">
-      Lee Robinson
-    </Link>
+    <div>
+      <Link href="/" className="flex mb-8 text-gray-400 fade-in font-semibold">
+        Jorge Delgadillo
+      </Link>
+    </div>
   );
 }

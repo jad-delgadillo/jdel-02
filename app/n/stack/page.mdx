@@ -20,7 +20,7 @@ I’ve been working with Next.js since 2018 (and React since 2015) so I'm most p
 For data fetching, I use newer React patterns:
 
 <details className="mb-1 -mt-2">
-  <summary className="text-gray-600 text-[15px] mb-2">Majority: Server Components</summary>
+  <summary className="text-gray-200 text-[15px] mb-2">Majority: Server Components</summary>
   
     Most of the time, I fetch data in a Server Component (like a `page` or `layout`). Occasionally, I'll still use an external library for client-fetches (e.g. `swr`) when working with existing codebases.
     
@@ -41,7 +41,7 @@ For data fetching, I use newer React patterns:
 </details>
 
 <details className="mb-1 [&[open]]:mb-4 [&[open]]:border-b [&[open]]:border-gray-100">
-  <summary className="text-gray-600 text-[15px] mb-2">Occasionally: React `use` + Context</summary>
+  <summary className="text-gray-200 text-[15px] mb-2">Occasionally: React `use` + Context</summary>
   
     A newer pattern I've started using is forwarding Promises to a Context provider, and then "unwrapping" the Promise with React’s `use`.
     
@@ -107,7 +107,7 @@ It provides well-designed and extensible components, built on top of accessible,
 Components are styled with Tailwind CSS—the most AI-friendly CSS library. Why? You can easily [colocate your styles](https://adamwathan.me/css-utility-classes-and-separation-of-concerns) with your markup. This makes generating and editing code with AI tools much easier.
 
 <details className="space-y-6">
-  <summary className="text-gray-600 text-[15px] mb-2">Why Tailwind?</summary>
+  <summary className="text-gray-200 text-[15px] mb-2">Why Tailwind?</summary>
   
   Tailwind uses a compiler to generate only the classes used. So while the utility CSS framework contains many possible class names, only the classes used will be included in the single, compiled CSS file.
   
