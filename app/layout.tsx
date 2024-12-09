@@ -30,7 +30,7 @@ export default function RootLayout({
         <body className="antialiased tracking-tight">
           <NavBar />
           <div className="min-h-screen flex flex-col justify-between md:pt-8 p-8 bg-[#18181A] text-neutral-100">
-            <main className="max-w-[60ch] mx-auto w-full space-y-6">
+            <main className="max-w-[60ch] mx-auto w-full space-y-6 pt-20">
               {children}
             </main>
             <Footer />
@@ -44,14 +44,14 @@ export default function RootLayout({
 
 function Footer() {
   const links = [
-    { name: "@jdel", url: "https://x.com/leeerob" },
+    { name: "@jdel", url: "https://instagram.com/jdel.dev/" },
     { name: "youtube", url: "https://www.youtube.com/" },
     { name: "linkedin", url: "https://www.linkedin.com/in/jdeldev" },
     { name: "github", url: "https://github.com/jad-delgadillo" },
   ];
 
   return (
-    <footer className="text-center pb-20 ">
+    <footer className="md:py-8 py-20 mt-auto">
       <div className="flex justify-center space-x-4 tracking-tight">
         {links.map((link) => (
           <a
