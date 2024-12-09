@@ -17,6 +17,28 @@ export const metadata: Metadata = {
     template: "%s | Jorge Delgadillo",
   },
   description: "Software Engineer, optimist, problem solver.",
+  openGraph: {
+    title: "Jorge Delgadillo",
+    description: "Software Engineer, optimist, problem solver.",
+    url: "https://jdel.dev",
+    siteName: "Jorge Delgadillo",
+    images: [
+      {
+        url: "/opengraph-image.png", // or .jpg or whatever your image extension is
+        width: 1200,
+        height: 630,
+        alt: "Jorge Delgadillo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Jorge Delgadillo",
+    description: "Software Engineer, optimist, problem solver.",
+    images: ["/opengraph-image.png"],
+  },
 };
 
 export default function RootLayout({
@@ -45,7 +67,6 @@ export default function RootLayout({
 function Footer() {
   const links = [
     { name: "@jdel", url: "https://instagram.com/jdel.dev/" },
-    { name: "youtube", url: "https://www.youtube.com/" },
     { name: "linkedin", url: "https://www.linkedin.com/in/jdeldev" },
     { name: "github", url: "https://github.com/jad-delgadillo" },
   ];
