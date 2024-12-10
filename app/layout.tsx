@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     siteName: "Jorge Delgadillo",
     images: [
       {
-        url: "/opengraph-image.png", // or .jpg or whatever your image extension is
+        url: "/opengraph-image.jpg",
         width: 1200,
         height: 630,
         alt: "Jorge Delgadillo",
