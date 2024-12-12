@@ -66,7 +66,7 @@ export default function RootLayout({
 
 function Footer() {
   const links = [
-    { name: "@jdel.dev", url: "https://instagram.com/jdel.dev/" },
+    { name: "@jdel.dev", url: "https://x.com/jdeldev" },
     { name: "linkedin", url: "https://www.linkedin.com/in/jdeldev" },
     { name: "github", url: "https://github.com/jad-delgadillo" },
   ];
