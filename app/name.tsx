@@ -5,10 +5,10 @@ export function NameTransition() {
     <div>
       <div className="flex flex-col items-start">
         <h1 className="font-medium pt-12 transition-element lee cursor-default ">
-          <span className="sr-only">Jorge Delgadillo</span>
+          <span className="md:sr-only flex">Jorge Delgadillo</span>
           <span
             aria-hidden="true"
-            className="block overflow-hidden group relative"
+            className="md:block overflow-hidden group relative hidden "
           >
             <span className="inline-block transition-all duration-300 ease-in-out group-hover:-translate-y-full font-semibold">
               {"Jorge Delgadillo".split("").map((letter, index) => (
