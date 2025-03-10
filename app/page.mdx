@@ -1,22 +1,16 @@
-import { NameTransition } from './name';
+import { NameTransition } from "./name";
+import Image from "next/image";
 
 <NameTransition />
 
-Hi! I&apos;m{" "}
-        <span className="text-white font-semibold">Jorge Delgadillo</span> a
-        developer residing in Guadalajara, México, currently working as an
-        independent Software Engineer. My field of interests is quite extensive,
-        ranging from web & app development to music production.
+Hi! I&apos;m a developer, an optimist, and a problem solver from Guadalajara, México, currently working as an independent Software Engineer. My
+field of interests is quite extensive, ranging from web n' app development to music
+production.
 
-{/* ## Writing
-
-- [My Stack](/n/stack)
-
-
-## Code
-
-- [saas-starter](https://github.com/leerob/next-saas-starter)
-
-## Art
-
-- [alwaysjad](https://alwaysjad.com) */}
+<Image
+  src="/images/profile.jpg"
+  alt="Jorge Delgadillo"
+  width={400}
+  height={400}
+  className="rounded-lg"
+/>

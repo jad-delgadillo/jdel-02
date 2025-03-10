@@ -1,31 +1,49 @@
+import Image from "next/image";
+
 export function NameTransition() {
   return (
-    <h1 className="font-medium pt-12 transition-element lee cursor-default ">
-      <span className="sr-only">Jorge Delgadillo</span>
-      <span aria-hidden="true" className="block overflow-hidden group relative">
-        <span className="inline-block transition-all duration-300 ease-in-out group-hover:-translate-y-full font-semibold">
-          {"Jorge Delgadillo".split("").map((letter, index) => (
-            <span
-              key={index}
-              className="inline-block"
-              style={{ transitionDelay: `${index * 25}ms` }}
-            >
-              {letter === " " ? "\u00A0" : letter}
+    <div>
+      <div className="flex flex-col items-start">
+        <h1 className="font-medium pt-12 transition-element lee cursor-default ">
+          <span className="sr-only">Jorge Delgadillo</span>
+          <span
+            aria-hidden="true"
+            className="block overflow-hidden group relative"
+          >
+            <span className="inline-block transition-all duration-300 ease-in-out group-hover:-translate-y-full font-semibold">
+              {"Jorge Delgadillo".split("").map((letter, index) => (
+                <span
+                  key={index}
+                  className="inline-block"
+                  style={{ transitionDelay: `${index * 25}ms` }}
+                >
+                  {letter === " " ? "\u00A0" : letter}
+                </span>
+              ))}
             </span>
-          ))}
-        </span>
-        <span className="inline-block absolute left-0 top-0 transition-all duration-300 ease-in-out translate-y-full group-hover:translate-y-0 font-semibold">
-          {"@jdel".split("").map((letter, index) => (
-            <span
-              key={index}
-              className="inline-block"
-              style={{ transitionDelay: `${index * 25}ms` }}
-            >
-              {letter}
+            <span className="inline-block absolute left-0 top-0 transition-all duration-300 ease-in-out translate-y-full group-hover:translate-y-0 font-semibold">
+              {"@jdel.dev".split("").map((letter, index) => (
+                <span
+                  key={index}
+                  className="inline-block"
+                  style={{ transitionDelay: `${index * 25}ms` }}
+                >
+                  {letter}
+                </span>
+              ))}
             </span>
-          ))}
-        </span>
-      </span>
-    </h1>
+          </span>
+        </h1>
+        {/* <div>
+          <Image
+            src="/images/profile.jpg"
+            alt="Jorge Delgadillo"
+            width={200}
+            height={200}
+            className="rounded-lg"
+          />
+        </div> */}
+      </div>
+    </div>
   );
 }

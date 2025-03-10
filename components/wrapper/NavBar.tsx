@@ -17,7 +17,7 @@ export default function NavBar() {
 
   return (
     <div className="pt-20 mx-auto bg-[#18181A] w-full absolute z-20 ">
-      <nav className="md:max-w-[60ch] max-w-[6ch] mx-auto justify-end gap-5 flex">
+      <nav className="md:max-w-[60ch] max-w-[6ch] mx-auto justify-end gap-4 flex">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
