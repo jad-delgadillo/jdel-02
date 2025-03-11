@@ -11,4 +11,68 @@ export const metadata = {
 
 <AnimatedName /># website link > [Tu Cielo de Noche](https://tucielodenoche.com)
 
-# Soon, I'll share the complete development story of Tu Cielo de Noche, from initial concept to launch. Expect insights into the project's stack: Next.js, TypeScript, Tailwind CSS, Supabase, Stripe, Canvas, AWS SQS/Lambda.
+# Mapping the Cosmos: Building a Microservice-Driven Celestial Map Generator
+
+## Introduction
+
+Ever looked up at the night sky and wondered what the stars looked like on a specific date and time from a particular location? That's the question that sparked the creation of "Tu Cielo de Noche," a web application that transforms celestial data into personalized, printable star maps. This project wasn't just about pretty pictures; it was a deep dive into microservices, serverless architecture, and the intricacies of astronomical calculations. Join me as I share the journey of building this unique e-commerce experience.
+
+## The Vision: Personalized Celestial Maps
+
+"Tu Cielo de Noche" empowers users to generate a stunning stereographic representation of the night sky, capturing the precise positions of stars, planets, constellations, the moon's phase, and the sun, all based on a user-defined date, time, and location. The core of this application lies in its ability to translate complex astronomical data from the Hipparcos catalog (stored as a JSON file) into a visual masterpiece using the powerful `astronomy.js` library for the calculations.
+
+## Tech Stack: A Microservices Approach
+
+To bring this vision to life, I assembled a robust tech stack:
+
+- **Next.js:** For a dynamic and performant frontend and API endpoints.
+- **TypeScript:** Ensuring type safety and code maintainability.
+- **Tailwind CSS:** For rapid and responsive UI development.
+- **Supabase:** Providing a reliable database and image storage solution.
+- **Canvas.js:** For high-quality image rendering.
+- **Stripe:** Handling secure payment processing.
+- **Resend:** Sending automated order confirmation emails.
+- **Prodigi API:** Integrating print-on-demand services for physical posters.
+- **AWS SQS/Lambda:** Orchestrating background processing and job execution.
+- **Docker:** For containerizing and deploying the Lambda function.
+
+## The Challenge: Consistent Image Rendering
+
+One of the biggest hurdles was ensuring consistent image quality and dimensions across all orders. Client-side rendering, while convenient, was limited by the user's screen resolution and DPI. To overcome this, I implemented a dual-rendering approach:
+
+- **Client-Side:** For real-time previews and user interaction.
+- **Server-Side:** For generating high-resolution, print-ready images.
+
+This meant duplicating the celestial map processing logic, but it was essential for maintaining quality.
+
+## The Workflow: Payment-Triggered Processing
+
+To optimize resource usage and ensure that map generation only occurred for successful orders, I integrated Stripe webhooks. When a payment was successful, Stripe triggered a webhook event, which in turn placed a message containing the order ID and celestial map configuration onto an AWS SQS queue.
+
+An AWS Lambda function, acting as a worker, then consumed these messages and executed the server-side celestial map processor. This ensured that map generation was tightly coupled with payment success.
+
+## The Lambda Deployment Saga: Docker and Manifest Compatibility
+
+Deploying the server-side celestial map processor as an AWS Lambda function presented a unique challenge. The `canvas.js` library, with its native dependencies, required a Docker image container for deployment.
+
+However, I encountered a frustrating error: "manifest not compatible." After some research, I discovered that AWS Lambda had limitations with multi-architecture Docker image manifests. The solution was simple but crucial:
+
+```bash
+docker build --platform linux/amd64 -t celestial-map-processor:latest
+```
+
+By explicitly specifying the `linux/amd64` platform during the Docker build process, I resolved the manifest compatibility issue. This was a significant win, and it felt incredibly rewarding to overcome this technical hurdle.
+
+## The Outcome: A Seamless Celestial Experience
+
+With the deployment issues resolved, "Tu Cielo de Noche" began functioning flawlessly. Users could now effortlessly create personalized star maps, and the entire process, from payment to print-on-demand fulfillment, was automated.
+
+## Key Takeaways:
+
+- Microservices architecture offers flexibility and scalability.
+- Serverless computing with AWS Lambda and SQS enables efficient background processing.
+- Docker containerization simplifies complex deployments.
+- Attention to platform-specific details is crucial for successful deployments.
+- Webhooks are a very powerful tool to interconnect services.
+
+Building "Tu Cielo de Noche" was a challenging yet incredibly rewarding experience. It's a testament to the power of modern web technologies and the ability to turn complex scientific data into a personalized and meaningful experience.
