@@ -49,7 +49,143 @@ This meant duplicating the celestial map processing logic, but it was essential 
 
 To optimize resource usage and ensure that map generation only occurred for successful orders, I integrated Stripe webhooks. When a payment was successful, Stripe triggered a webhook event, which in turn placed a message containing the order ID and celestial map configuration onto an AWS SQS queue.
 
+Here's a simplified example of how the Stripe webhook processes successful payment events:
+
+```typescript
+// Simplified Stripe Webhook Example
+
+import Stripe from "stripe";
+
+// Initialize Stripe (replace with your test secret key for example)
+const stripe = new Stripe("sk_test_example", {
+  apiVersion: "2023-10-16",
+});
+
+// Example webhook secret (replace with a test secret)
+const webhookSecret = "whsec_example";
+
+export async function handler(req: Request) {
+  try {
+    const body = await req.text();
+    const signature = req.headers.get("stripe-signature");
+
+    if (!signature) {
+      console.error("No Stripe signature found.");
+      return new Response(JSON.stringify({ error: "No signature" }), {
+        status: 200,
+      });
+    }
+
+    let event: Stripe.Event;
+    try {
+      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    } catch (err) {
+      console.error("Webhook signature verification failed:", err);
+      return new Response(JSON.stringify({ error: "Verification failed" }), {
+        status: 200,
+      });
+    }
+
+    if (event.type === "payment_intent.succeeded") {
+      const paymentIntent = event.data.object as Stripe.PaymentIntent;
+      const orderId = paymentIntent.metadata?.orderId;
+
+      if (orderId) {
+        console.log(`Payment succeeded for order: ${orderId}`);
+        // Simulate adding job to queue (replace with your queue logic)
+        await addToQueue(orderId, paymentIntent.metadata);
+      } else {
+        console.error("No orderId found in payment intent metadata.");
+      }
+    }
+
+    return new Response(JSON.stringify({ received: true }), { status: 200 });
+  } catch (err) {
+    console.error("Webhook processing error:", err);
+    return new Response(JSON.stringify({ error: "Processing error" }), {
+      status: 200,
+    });
+  }
+}
+
+// Example function to simulate adding a job to a queue
+async function addToQueue(orderId: string, metadata: any) {
+  console.log(
+    `Simulating adding order ${orderId} to queue with metadata:`,
+    metadata
+  );
+  // Replace this with your actual queue integration logic.
+  await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate queue delay
+  console.log(`Order ${orderId} added to queue.`);
+}
+```
+
 An AWS Lambda function, acting as a worker, then consumed these messages and executed the server-side celestial map processor. This ensured that map generation was tightly coupled with payment success.
+
+## The Lambda Function: Processing SQS Events
+
+The core of our server-side processing is an AWS Lambda function that handles messages from the SQS queue. This function is triggered whenever a new message arrives, signaling a successful payment and the need to generate a celestial map.
+
+Here's a simplified example of the Lambda function's core logic:
+
+```typescript
+// Simplified Lambda Function Example
+
+import { SQSEvent, Context } from "aws-lambda";
+
+/**
+ * Example function to process SQS messages.
+ * This simulates the core logic of your celestial map processing.
+ */
+export async function handler(
+  event: SQSEvent,
+  context: Context
+): Promise<void> {
+  console.log("Processing SQS event...");
+
+  // Iterate through each record in the SQS event
+  for (const record of event.Records) {
+    try {
+      // Parse the JSON message body
+      const messageBody = JSON.parse(record.body);
+
+      // Extract order ID and celestial map configuration
+      const orderId = messageBody.orderId;
+      const mapConfig = messageBody.mapConfig;
+
+      console.log(`Processing order ID: ${orderId}`);
+
+      // Simulate celestial map processing (replace with your actual logic)
+      await processCelestialMap(orderId, mapConfig);
+
+      console.log(`Order ID: ${orderId} processed successfully.`);
+    } catch (error) {
+      console.error("Error processing SQS message:", error);
+    }
+  }
+
+  console.log("SQS event processing complete.");
+}
+
+/**
+ * Example function to simulate celestial map processing.
+ * Replace this with your actual map generation logic.
+ */
+async function processCelestialMap(
+  orderId: string,
+  mapConfig: any
+): Promise<void> {
+  // Simulate asynchronous map generation
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate 1 second processing time
+
+  console.log(
+    `Simulated celestial map generation for order ID: ${orderId} with config:`,
+    mapConfig
+  );
+  // Here, you would use mapConfig to generate the celestial map.
+  // And then store the result.
+}
+```
 
 ## The Lambda Deployment Saga: Docker and Manifest Compatibility
 
@@ -59,6 +195,7 @@ However, I encountered a frustrating error: "manifest not compatible." After som
 
 ```bash
 docker build --platform linux/amd64 -t celestial-map-processor:latest
+
 ```
 
 By explicitly specifying the `linux/amd64` platform during the Docker build process, I resolved the manifest compatibility issue. This was a significant win, and it felt incredibly rewarding to overcome this technical hurdle.
