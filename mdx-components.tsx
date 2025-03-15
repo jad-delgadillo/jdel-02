@@ -17,7 +17,7 @@ const components = {
     <h2 className="text-gray-200 font-medium mt-8 mb-3" {...props} />
   ),
   h3: (props: HeadingProps) => (
-    <h3 className="text-gray-200 font-medium mt-8 mb-3" {...props} />
+    <h3 className="text-gray-200 font-medium" {...props} />
   ),
   h4: (props: HeadingProps) => <h4 className="font-medium" {...props} />,
   p: (props: ParagraphProps) => (
@@ -38,7 +38,7 @@ const components = {
   ),
   a: ({ href, children, ...props }: AnchorProps) => {
     const className =
-      "text-gray-200 hover:text-neutral-400 hover:bg-neutral-900";
+      "text-blue-500 underline underline-offset-4 hover:text-blue-800 hover:bg-neutral-900";
     if (href?.startsWith("/")) {
       return (
         <Link href={href} className={className} {...props}>

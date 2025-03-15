@@ -1,0 +1,386 @@
+import { AnimatedName } from "../animated-name.tsx";
+
+export const metadata = {
+  title: "UNDR",
+  alternates: {
+    canonical: "/code/undr",
+  },
+};
+
+# UNDR
+
+<AnimatedName />
+
+#website link [UNDR](https://undr-jaddelgadillos-projects.vercel.app/)
+
+## Crafting an Aesthetic Music Portfolio with Next.js and Framer Motion
+
+Building a compelling online presence is crucial for any artist, and for musicians, a visually engaging portfolio is paramount. In this blog post, I'll walk you through my experience developing an aesthetic music portfolio website using Next.js, TypeScript, SCSS, and the powerful animation library, Framer Motion.
+
+## Why These Technologies?
+
+For this project, I chose Next.js for its server-side rendering capabilities and performance optimizations. I opted for the pages router over the app router due to the complexity of implementing smooth page transitions. TypeScript brought type safety and improved code maintainability. SCSS allowed for clean and organized styling, and Framer Motion provided the tools for creating fluid and engaging animations.
+
+To manage the portfolio's content, I utilized a Google Sheets API as a makeshift database. This allowed me to easily store and retrieve data such as image links, iframe links, data names, credits, and titles.
+
+## The Preloader Experience
+
+One of the most enjoyable aspects of this project was developing a preloader animation. A well-crafted preloader can significantly enhance the user experience by providing visual feedback during the initial loading phase.
+
+Here's the code snippet for the preloader component:
+
+```typescript
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import styles from "./Preloader.module.scss";
+
+export default function Preloader() {
+  const [loadingPercentage, setLoadingPercentage] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Simulate loading progress
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLoadingPercentage((prev) => {
+        if (prev < 100) {
+          return prev + 1;
+        } else {
+          clearInterval(interval);
+          setIsLoaded(true);
+          return prev;
+        }
+      });
+    }, 12); // Adjust speed of count
+
+    return () => clearInterval(interval); // Cleanup the interval
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {!isLoaded && (
+        <motion.div
+          className={`${styles.preloader} fixed inset-0 flex items-end w-screen bg-[#0A0A0A] z-50`}
+          initial={{ y: 0 }} // Start at its original position
+          animate={{ y: 0 }} // Keep in place while loading
+          exit={{ y: "100%" }} // Slide background out after delay
+          transition={{ delay: 0.6, duration: 0.3, ease: "easeInOut" }} // Delay background slide
+        >
+          {/* Loading Percentage */}
+          <motion.div
+            className="text-white text-4xl  flex justify-between items-end w-full px-3 "
+            initial={{ y: 0 }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }} // Slide loading percentage out first
+            transition={{ delay: 0.5, duration: 0.5, ease: "easeInOut" }} // Shorter duration for loading percentage
+          >
+            <div className="text-[15rem] leading-none tracking-tight font-black text-stone-800">
+              {loadingPercentage}%
+            </div>
+            <motion.div
+              initial={{ y: 0 }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ delay: 0.5, duration: 0.5, ease: "easeInOut" }}
+              className=" text-[10rem] pr-4 leading-none font-black scale-x-105 tracking-tight "
+            >
+              UNDR
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+```
+
+# And here is the SCSS file for the preloader.
+
+```scss
+.preloader {
+  background-color: #0a0a0a; // Dark background with opacity
+  color: white;
+  font-family: "Inter", sans-serif;
+  z-index: 9999; // Ensure it stays on top
+  //   transition: opacity 0.5s ease-in-out;
+}
+```
+
+## Explanation:
+
+- **State Management:**
+  - `loadingPercentage`: Tracks the simulated loading progress.
+  - `isLoaded`: Indicates whether the loading is complete.
+- **Simulated Loading:**
+  - `useEffect` with `setInterval` simulates a loading process, incrementing `loadingPercentage` every 12 milliseconds.
+  - Once `loadingPercentage` reaches 100, the interval is cleared, and `isLoaded` is set to `true`.
+- **Framer Motion Animations:**
+  - `AnimatePresence` ensures proper mounting and unmounting animations.
+  - The main `motion.div` covers the entire screen and slides out (`exit={{ y: "100%" }}`) after a slight delay.
+  - The loading percentage and "UNDR" text also slide out with their own animations.
+- **Styling:**
+  - The SCSS file provides a dark background and white text for the preloader.
+  - Tailwind classes are used for text sizing, positioning, and font styling.
+- **Visual effect:**
+  - The pre-loader starts at the bottom of the screen, displaying a loading percentage, and the website name "UNDR" in a very large font. Once loaded the preloader slides down off the screen, revealing the website.
+
+## Key Takeaways
+
+- Framer Motion is incredibly powerful for creating smooth and engaging animations.
+- Using a Google Sheets API as a database can be a simple and effective way to manage content.
+- Preloaders can significantly enhance the user experience by providing visual feedback during loading.
+- The pages router can be used for more control over page transitions.
+
+This project was a great learning experience, and I'm excited to continue exploring the possibilities of Next.js and Framer Motion.
+
+## Text Scramble Animation
+
+Another great animation to experiment with was the text-scramble effect on the about page. This adds a dynamic and engaging element to the text, revealing it piece by piece with a randomized character effect.
+
+Here's the code snippet:
+
+```typescript
+"use client";
+import { type JSX, useEffect, useState } from "react";
+import { motion, MotionProps } from "framer-motion";
+
+type TextScrambleProps = {
+  children: string;
+  duration?: number;
+  speed?: number;
+  characterSet?: string;
+  as?: React.ElementType;
+  className?: string;
+  contentClassName?: string;
+  trigger?: boolean;
+  onScrambleComplete?: () => void;
+} & MotionProps;
+
+const defaultChars =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+
+export function TextScramble({
+  children,
+  duration = 0.8,
+  speed = 0.04,
+  characterSet = defaultChars,
+  className,
+  contentClassName,
+  as: Component = "p",
+  trigger = true,
+  onScrambleComplete,
+  ...props
+}: TextScrambleProps) {
+  const MotionComponent = motion.create(
+    Component as keyof JSX.IntrinsicElements
+  );
+  const [displayText, setDisplayText] = useState(children);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const text = children;
+
+  const scramble = async () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+
+    const steps = duration / speed;
+    let step = 0;
+
+    const interval = setInterval(() => {
+      let scrambled = "";
+      const progress = step / steps;
+
+      for (let i = 0; i < text.length; i++) {
+        if (text[i] === " ") {
+          scrambled += " ";
+          continue;
+        }
+
+        if (progress * text.length > i) {
+          scrambled += text[i];
+        } else {
+          scrambled +=
+            characterSet[Math.floor(Math.random() * characterSet.length)];
+        }
+      }
+
+      setDisplayText(scrambled);
+      step++;
+
+      if (step > steps) {
+        clearInterval(interval);
+        setDisplayText(text);
+        setIsAnimating(false);
+        onScrambleComplete?.();
+      }
+    }, speed * 1000);
+  };
+
+  useEffect(() => {
+    if (!trigger) return;
+
+    scramble();
+  }, [trigger]);
+
+  return (
+    <MotionComponent className={className} {...props}>
+      <span className={contentClassName}>{displayText}</span>
+    </MotionComponent>
+  );
+}
+```
+
+# Integrating Google Sheets as a Dynamic Data Source in Next.js API Routes
+
+In this section, we'll dissect a Next.js API route that leverages Google Sheets as a dynamic data source. This is a powerful technique for managing content without needing a full-fledged database, especially for projects with frequently updated data.
+
+## Understanding the Code
+
+The provided code creates a Next.js API route that fetches data from a Google Sheet and returns it as JSON. Let's break down the key components:
+
+### 1. CORS Configuration
+
+```typescript
+import Cors from "cors";
+
+const cors = Cors({
+  methods: ["GET"],
+  origin:
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_SITE_URL
+      : "*",
+});
+```
+
+- **Purpose:** Configures Cross-Origin Resource Sharing (CORS) to control which domains can access the API.
+- **Implementation:**
+  - It allows `GET` requests.
+  - In production, it restricts access to the site's URL defined in `NEXT_PUBLIC_SITE_URL`.
+  - In development, it allows access from any origin (`*`).
+- **Importance:** Security measure to prevent unauthorized access to your API.
+
+## 2. Middleware Helper
+
+```typescript
+const runMiddleware = (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  fn: (
+    req: NextApiRequest,
+    res: NextApiResponse,
+    callback: (result: unknown) => void
+  ) => void
+) => {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result: unknown) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+      return resolve(result);
+    });
+  });
+};
+```
+
+- **Purpose:** A utility function to run middleware within a promise.
+- **Implementation:** Converts asynchronous middleware functions into promises for easier `async/await` usage.
+- **Usage:** Used to apply the CORS middleware to the request.
+
+## 3. Environment Variables and Configuration
+
+```typescript
+const GOOGLE_SPREADSHEET_ID = process.env.GOOGLE_SPREADSHEET_ID;
+const API_KEY = process.env.GOOGLE_API_KEY;
+const RANGE = "Sheet1!B4:F";
+```
+
+- **Purpose:** Stores configuration values for the Google Sheets API.
+- **Implementation:**
+  - `GOOGLE_SPREADSHEET_ID`: The ID of your Google Sheet.
+  - `API_KEY`: Your Google API key.
+  - `RANGE`: The range of cells to fetch from the sheet.
+- **Security:** These values should be stored in your `.env.local` file (and `.env.production` for production) and never committed to version control.
+
+## 4. Data Fetching and Caching
+
+```typescript
+// Cache the data for 5 minutes
+let cachedData: ProjectData[] | null = null;
+let lastFetchTime: number = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+```
+
+- **Purpose:** Stores configuration values for the Google Sheets API.
+- **Implementation:**
+  - `GOOGLE_SPREADSHEET_ID`: The ID of your Google Sheet.
+  - `API_KEY`: Your Google API key.
+  - `RANGE`: The range of cells to fetch from the sheet.
+- **Security:** These values should be stored in your `.env.local` file (and `.env.production` for production) and never committed to version control.
+
+## 4. Data Fetching and Caching
+
+```typescript
+// Cache the data for 5 minutes
+let cachedData: ProjectData[] | null = null;
+let lastFetchTime: number = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+```
+
+- **Purpose:** Handles incoming API requests.
+- **Implementation:**
+  - Applies CORS middleware.
+  - Validates the request method (only GET allowed).
+  - Checks for required environment variables.
+  - Returns cached data if available and not expired.
+  - Fetches data from Google Sheets API.
+  - Formats the data.
+  - Updates the cache.
+  - Sets cache headers for edge caching.
+  - Handles errors gracefully.
+- **Error Handling:** Provides detailed error messages in development and generic messages in production for security.
+
+## 6. Data Formatting
+
+```typescript
+const formattedData = data.values.map((row: string[]) => {
+  const [
+    artist = "",
+    projectName = "",
+    credits = "",
+    artworkUrl = "",
+    iframe = "",
+  ] = row;
+  return {
+    artist,
+    projectName,
+    credits,
+    artworkUrl,
+    iframe,
+  };
+});
+```
+
+- **Purpose:** Transforms the raw data from Google Sheets into a structured JSON format.
+- **Implementation:** Uses `map` to iterate over the rows and extract the data into an object.
+
+## How to Use This Code
+
+1.  **Set up Google Sheets API:**
+    - Enable the Google Sheets API in the Google Cloud Console.
+    - Create an API key.
+    - Create a Google Sheet and note its ID.
+2.  **Configure Environment Variables:**
+    - Create a `.env.local` file in your Next.js project.
+    - Add `GOOGLE_SPREADSHEET_ID` and `GOOGLE_API_KEY` variables.
+3.  **Create API Route:**
+    - Create a file `pages/api/sheets.ts` and paste the code.
+4.  **Fetch Data:**
+    - Use `fetch` or `axios` in your Next.js components to call the API route.
+
+This pattern makes it easy to update content by simply modifying the spreadsheet.
+
+---
+
+## Thoughts
+
+This project was a fantastic opportunity to deepen my understanding of Next.js, Framer Motion, and API integration. I learned a lot about creating seamless animations, managing data with Google Sheets, and optimizing API routes for performance. The process of debugging and refining the animations and API calls was challenging but incredibly rewarding.
+
+I'm excited to apply these learnings to future projects and continue exploring the possibilities of web development.

@@ -48,7 +48,7 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html lang="en" className={`${inter.className}`}>
+      <html lang="en" className={`bg-[#18181A] ${inter.className}`}>
         <body className="antialiased tracking-tight">
           <NavBar />
           <div className="min-h-screen flex flex-col justify-between md:pt-8 p-8 bg-[#18181A] text-neutral-100">
