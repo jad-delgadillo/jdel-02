@@ -1,11 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { IBM_Plex_Sans_Condensed } from "next/font/google";
 import { ViewTransitions } from "next-view-transitions";
 import { Analytics } from "@vercel/analytics/react";
 import NavBar from "@/components/wrapper/NavBar";
+import { ArrowUpRight } from 'lucide-react';
 
-const inter = Inter({ subsets: ["latin"] });
+const ibm_plex_sans_condensed = IBM_Plex_Sans_Condensed({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://jdel.dev"),
@@ -48,11 +49,11 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html lang="en" className={`bg-[#18181A] ${inter.className}`}>
-        <body className="antialiased tracking-tight">
+      <html lang="en" className={`bg-neutral-100 ${ibm_plex_sans_condensed.className}`}>
+        <body className="antialiased tracking-tight font-ibm_plex_sans_condensed">
           <NavBar />
-          <div className="min-h-screen flex flex-col justify-between md:pt-8 p-8 bg-[#18181A] text-neutral-100">
-            <main className="max-w-[60ch] mx-auto w-full space-y-6 pt-20">
+          <div className="min-h-screen flex flex-col  md:pt-0  bg-neutral-100 justify-between ">
+            <main className="max-w-[60ch] mx-auto w-full space-y-6 pt-20 ">
               {children}
             </main>
             <Footer />
@@ -72,7 +73,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="md:py-8 py-20 mt-auto ">
+    <footer className="mb-8 ">
       <div className="max-w-[60ch] mx-auto flex justify-start space-x-4 tracking-tight">
         {links.map((link) => (
           <a
@@ -80,9 +81,10 @@ function Footer() {
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-400 hover:text-blue-200 transition-colors duration-200"
+            className="flex items-center space-x-2 text-black hover:text-blue-800 transition-colors duration-200"
           >
             {link.name}
+            <ArrowUpRight className="w-3 h-3" />
           </a>
         ))}
       </div>

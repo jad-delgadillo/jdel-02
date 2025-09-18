@@ -1,4 +1,4 @@
-import Image from "next/image";
+
 
 export function NameTransition() {
   return (
@@ -34,15 +34,6 @@ export function NameTransition() {
             </span>
           </span>
         </h1>
-        {/* <div>
-          <Image
-            src="/images/profile.jpg"
-            alt="Jorge Delgadillo"
-            width={200}
-            height={200}
-            className="rounded-lg"
-          />
-        </div> */}
       </div>
     </div>
   );

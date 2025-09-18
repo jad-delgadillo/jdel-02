@@ -17,9 +17,9 @@ export function SkeletonImage({
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <div className="relative w-full max-w-[400px] aspect-[3/4]">
+    <div className="relative w-full max-w-[380px] aspect-[3/4]">
       {isLoading && (
-        <div className="absolute inset-0 animate-pulse bg-neutral-800 dark:bg-neutral-800 rounded-lg" />
+        <div className="absolute inset-0 animate-pulse bg-neutral-200 dark:bg-neutral-800 rounded-lg" />
       )}
       <Image
         src={src}

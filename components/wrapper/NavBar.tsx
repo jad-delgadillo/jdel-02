@@ -16,7 +16,7 @@ export default function NavBar() {
   ];
 
   return (
-    <div className="pt-20 mx-auto bg-[#18181A] w-full absolute z-20 ">
+    <div className="pt-20 mx-auto bg-neutral-100 w-full absolute z-20 ">
       <nav className="md:max-w-[60ch] md:px-0 px-8 mx-auto  gap-5 flex">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -29,15 +29,14 @@ export default function NavBar() {
               onMouseLeave={() => setHoveredItem(null)}
             >
               <h2
-                className={`transition-colors duration-200 ${
-                  isActive ? "text-white" : "text-gray-400"
-                }`}
+                className={`transition-colors duration-200 ${isActive ? "text-black" : "text-neutral-500"
+                  }`}
               >
                 {item.name}
               </h2>
               {(hoveredItem === item.name || isActive) && (
                 <span
-                  className="absolute -bottom-[0.5px] left-0 w-full h-[0.5px] bg-white  transform origin-left"
+                  className="absolute -bottom-[0.5px] left-0 w-full h-[0.5px] bg-black  transform origin-left"
                   style={{
                     animation:
                       hoveredItem === item.name
