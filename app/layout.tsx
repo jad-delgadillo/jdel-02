@@ -66,14 +66,14 @@ export default function RootLayout({
 
 function Footer() {
   const links = [
-    { name: "@jdel.dev", url: "https://x.com/jdeldev" },
+    { name: "instagram", url: "https://instagram.com/alwaysjad" },
     { name: "linkedin", url: "https://www.linkedin.com/in/jdeldev" },
     { name: "github", url: "https://github.com/jad-delgadillo" },
   ];
 
   return (
-    <footer className="md:py-8 py-20 mt-auto">
-      <div className="flex justify-center space-x-4 tracking-tight">
+    <footer className="md:py-8 py-20 mt-auto ">
+      <div className="max-w-[60ch] mx-auto flex justify-start space-x-4 tracking-tight">
         {links.map((link) => (
           <a
             key={link.name}
