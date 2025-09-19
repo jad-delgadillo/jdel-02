@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { IBM_Plex_Sans_Condensed } from "next/font/google";
-import { ViewTransitions } from "next-view-transitions";
 import { Analytics } from "@vercel/analytics/react";
 import NavBar from "@/components/wrapper/NavBar";
 import { ArrowUpRight } from 'lucide-react';
@@ -48,20 +47,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ViewTransitions>
-      <html lang="en" className={`bg-neutral-100 ${ibm_plex_sans_condensed.className}`}>
-        <body className="antialiased tracking-tight font-ibm_plex_sans_condensed">
-          <NavBar />
-          <div className="min-h-screen flex flex-col  md:pt-0  bg-neutral-100 justify-between ">
-            <main className="max-w-[60ch] mx-auto w-full space-y-6 pt-20 ">
-              {children}
-            </main>
-            <Footer />
-            <Analytics />
-          </div>
-        </body>
-      </html>
-    </ViewTransitions>
+    <html lang="en" className={`bg-neutral-100 ${ibm_plex_sans_condensed.className}`}>
+      <body className="antialiased tracking-tight font-ibm_plex_sans_condensed">
+        <NavBar />
+        <div className="min-h-screen flex flex-col md:pt-0 bg-neutral-100 justify-between">
+          <main className="max-w-[60ch] px-8 md:px-0 mx-auto w-full space-y-6 md:pt-20 pt-10">
+            {children}
+          </main>
+          <Footer />
+          <Analytics />
+        </div>
+      </body>
+    </html>
   );
 }
 
@@ -73,8 +70,8 @@ function Footer() {
   ];
 
   return (
-    <footer className="mb-8 ">
-      <div className="max-w-[60ch] mx-auto flex justify-start space-x-4 tracking-tight">
+    <footer className="mb-8 md:mb-8 ">
+      <div className="max-w-[60ch] md:px-0 px-8 mx-auto flex justify-start space-x-4 tracking-tight">
         {links.map((link) => (
           <a
             key={link.name}

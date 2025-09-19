@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 
@@ -16,7 +16,7 @@ export default function NavBar() {
   ];
 
   return (
-    <div className="pt-20 mx-auto bg-neutral-100 w-full absolute z-20 ">
+    <div className="md:pt-20 pt-10 mx-auto bg-neutral-100 w-full absolute z-20 ">
       <nav className="md:max-w-[60ch] md:px-0 px-8 mx-auto  gap-5 flex">
         {navItems.map((item) => {
           const isActive = pathname === item.href;

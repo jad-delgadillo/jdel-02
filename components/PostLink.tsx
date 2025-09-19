@@ -16,10 +16,11 @@ export function PostLink({
     day: "numeric",
   }).format(new Date(date));
   return (
-    <li>
-      <Link href={href} className="w-full justify-between text-blue-500  flex hover:text-blue-800 transition-all rounded-lg px-2 py-1">
+    <div className="flex items-center">
+      <Link href={href} className="w-full justify-between text-blue-500  flex hover:text-blue-800 transition-all rounded-lg">
         <span className=" underline-offset-4 underline">{title}</span>   <span className="text-sm translate-y-0.5 text-gray-500">{formattedDate}</span>
       </Link>
-    </li>
+
+    </div>
   );
 }

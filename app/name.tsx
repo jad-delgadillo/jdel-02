@@ -4,7 +4,7 @@ export function NameTransition() {
   return (
     <div>
       <div className="flex flex-col items-start">
-        <h1 className="font-medium pt-12 transition-element lee cursor-default ">
+        <h1 className="font-medium pt-12 cursor-default">
           <span className="md:sr-only flex">Jorge Delgadillo</span>
           <span
             aria-hidden="true"
