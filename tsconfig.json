@@ -33,8 +33,9 @@
     "**/*.mdx",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "tailwind.confing.js"  ],
+    ".next/types/**/*.ts",
+    "tailwind.confing.js"
+  ],
   "exclude": [
     "node_modules",
     "app/n/ai/*.tsx"

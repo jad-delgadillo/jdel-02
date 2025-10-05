@@ -4,6 +4,7 @@ import { IBM_Plex_Sans_Condensed } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import NavBar from "@/components/wrapper/NavBar";
 import { ArrowUpRight } from 'lucide-react';
+import FooterWrapper from "@/components/FooterWrapper";
 
 const ibm_plex_sans_condensed = IBM_Plex_Sans_Condensed({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
@@ -54,7 +55,9 @@ export default function RootLayout({
           <main className="max-w-[60ch] px-8 md:px-0 mx-auto w-full space-y-6 md:pt-20 pt-10">
             {children}
           </main>
-          <Footer />
+          <FooterWrapper>
+            <Footer />
+          </FooterWrapper>
           <Analytics />
         </div>
       </body>
@@ -70,7 +73,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="mb-8 md:mb-8 ">
+    <footer className="mb-8 md:mb-8">
       <div className="max-w-[60ch] md:px-0 px-8 mx-auto flex justify-start space-x-4 tracking-tight">
         {links.map((link) => (
           <a
