@@ -1,0 +1,118 @@
+import { AnimatedName } from "../animated-name.tsx";
+
+export const metadata = {
+  title: "Cobriq — SaaS Payment Application",
+  alternates: {
+    canonical: "/code/cobriq",
+  },
+};
+
+# Cobriq — SaaS Payment Application
+<AnimatedName />
+[https://cobriq.com](https://cobriq.com)
+
+
+Cobriq is a SaaS that lets freelancers and small businesses create **paylinks** and **QR terminals** to collect money fast via **Stripe Checkout**, with a modern stack (Next.js + Convex + Clerk).
+
+---
+
+## TL;DR
+
+- **What**: A lightweight **payments wrapper** that generates **paylinks** and **QR codes** for instant checkout; includes dashboards, receipts, and webhook-driven status updates.
+- **Why**: Make getting paid **frictionless**—no custom backend or Stripe console spelunking required. Share a link or show a QR and you're done.
+- **How**: **Next.js 15 (App Router)** + **Convex** (data/actions) + **Clerk** (auth) + **Stripe** (Checkout/Webhooks) on **Vercel**; secure webhook ingestion updates Convex state in real time.
+
+---
+
+## Architecture (lean)
+
+**Frontend**
+- **Next.js 15 + React + Tailwind** for UI, app routes for server actions and API handlers.
+- **Shadcn/ui** for form and table primitives; **QR generation** on the client.
+
+**Backend**
+- **Convex** for data models, mutations, and **actions** (server-side Stripe calls).
+- **API routes** in Next.js for **Stripe webhooks** (optionally proxy to Convex mutations).
+
+**Auth**
+- **Clerk** for sign in/up, organizations (optional), and JWTs; SSR helpers on protected routes.
+
+**Payments**
+- **Stripe Checkout Sessions** for one-off payments; optional **Payment Links** for static products.
+- **Webhooks**: `checkout.session.completed`, `payment_intent.succeeded/failed`, etc., mapped to internal states.
+
+**Data / State**
+- **Convex tables**: `paylinks`, `checkouts`, `customers`, `events`, `receipts`.
+- Derived fields: amount (minor units), currency, purpose/notes, status, customer email.
+
+**DNS**
+- Primary domain: `cobriq.com` on Vercel.  
+- `www` CNAME → Vercel alias. Root A/ALIAS → Vercel (or use Apex CNAME if provider supports).
+
+---
+
+## Key Surfaces
+
+- **Onboarding** (`/dashboard/welcome`)  
+  Minimal profile, business name, default currency, Stripe status badge.
+
+- **Dashboard** (`/dashboard`)  
+  KPIs (Today / 7d / 30d), recent payments, most-used paylinks.
+
+- **Create Paylink** (`/paylinks/new`)  
+  Form: description, amount, currency, collect email toggle, redirect URL, **generate QR** toggle.
+
+- **Paylink Detail** (`/p/[id]`)  
+  Public landing with **Pay Now** button → Stripe Checkout; optional tip %, terms, and notes.
+
+- **QR Terminal** (`/terminal/[id]`)  
+  Full-bleed QR view; supports quick amount overrides (if enabled).
+
+- **Payments / Receipts** (`/payments`)  
+  Status timeline, downloadable receipt PDFs, refund shortcut (coming soon).
+
+- **Admin** (`/settings`)  
+  API keys (internal), webhook health, domain status, organization/team (optional).
+
+---
+
+## Runtime Flow
+
+1. **User signs in** with Clerk → redirected to `/dashboard`.
+2. **Create Paylink**: submit metadata + amount → Convex mutation persists `paylinks` row and returns **short code** + derived **QR**.
+3. **Customer opens link or scans QR** → **Next.js route** requests a **Checkout Session** via Convex **action** (amount, description, success/cancel URLs).
+4. Customer pays in **Stripe Checkout** → Stripe fires **webhook** → Next.js `/api/stripe/webhook` verifies signature and **updates Convex** (`checkouts.status = "succeeded"`), emits event.
+5. Dashboard auto-refreshes via Convex queries; **receipt** becomes available and status badges update.
+
+---
+
+## Tech Stack
+
+- **UI**: React 19, TypeScript, Tailwind, shadcn/ui
+- **Framework**: Next.js 15 App Router (Server Actions + Route Handlers)
+- **Data**: Convex (schema, queries, mutations, actions)
+- **Auth**: Clerk (SSR + client components)
+- **Payments**: Stripe (Checkout, Webhooks, Dashboard)
+- **Infra**: Vercel (Edge/Node runtimes), custom domain `cobriq.com`
+- **Email (optional)**: Resend for receipts/confirmations
+- **Utilities**: zod, react-hook-form, lucide-react, qrcode
+
+---
+
+## Commands
+
+```bash
+# Install
+pnpm install
+
+# Dev (Next.js + Convex)
+pnpm dev          # runs next dev & convex dev concurrently (via turbo or npm-run-all)
+
+# Only Next.js app
+pnpm dev:web
+
+# Only Convex local dev server
+pnpm dev:convex
+
+# Build & start
+pnpm build && pnpm start
