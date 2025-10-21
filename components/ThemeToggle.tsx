@@ -1,10 +1,15 @@
 "use client";
 
+import clsx from "clsx";
 import { useTheme } from "@/hooks/useTheme";
 import { Moon, Sun } from "lucide-react";
 import { useRef, useState } from "react";
 
-export default function ThemeToggle() {
+type ThemeToggleProps = {
+  className?: string;
+};
+
+export default function ThemeToggle({ className }: ThemeToggleProps) {
   const { resolvedTheme, setTheme } = useTheme();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -65,7 +70,11 @@ export default function ThemeToggle() {
     <button
       ref={buttonRef}
       onClick={toggleTheme}
-      className="fixed bottom-6 right-6 z-50 p-1 rounded-full bg-surface-strong hover:cursor-pointer hover:bg-surface transition-all duration-200 shadow-lg border border-border"
+      className={clsx(
+        "flex items-center justify-center cursor-pointer rounded-full p-2 text-foreground transition-colors duration-200 hover:text-accent",
+        resolvedTheme === "dark" ? "hover:bg-neutral-800" : "hover:bg-neutral-200",
+        className
+      )}
       aria-label="Toggle theme"
     >
       {resolvedTheme === "dark" ? (

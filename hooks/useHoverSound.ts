@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useSoundSettings } from "@/components/SoundSettingsProvider";
 
 export function useHoverSound(soundPath: string = "/sounds/tap_03.wav") {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { muted } = useSoundSettings();
 
   useEffect(() => {
     // Create audio element
@@ -20,6 +22,9 @@ export function useHoverSound(soundPath: string = "/sounds/tap_03.wav") {
   }, [soundPath]);
 
   const playSound = () => {
+    if (muted) {
+      return;
+    }
     if (audioRef.current) {
       audioRef.current.currentTime = 0; // Reset to start
       audioRef.current.play().catch((error) => {

@@ -9,18 +9,21 @@ export default function AnchorHoverSound() {
   useEffect(() => {
     let lastAnchor: HTMLElement | null = null;
 
-    const handleMouseOver = (event: MouseEvent) => {
-      const target = event.target;
-      if (!(target instanceof Element)) {
+    const getAnchorFromEvent = (eventTarget: EventTarget | null) => {
+      if (!(eventTarget instanceof Element)) {
+        return null;
+      }
+      const anchor = eventTarget.closest("a");
+      return anchor instanceof HTMLElement ? anchor : null;
+    };
+
+    const handlePointerOver = (event: PointerEvent) => {
+      if (event.pointerType === "touch" || event.pointerType === "pen") {
         return;
       }
 
-      const anchor = target.closest("a");
-      if (!(anchor instanceof HTMLElement)) {
-        return;
-      }
-
-      if (lastAnchor === anchor) {
+      const anchor = getAnchorFromEvent(event.target);
+      if (!anchor || lastAnchor === anchor) {
         return;
       }
 
@@ -28,14 +31,9 @@ export default function AnchorHoverSound() {
       playHoverSound();
     };
 
-    const handleMouseOut = (event: MouseEvent) => {
-      const target = event.target;
-      if (!(target instanceof Element)) {
-        return;
-      }
-
-      const anchor = target.closest("a");
-      if (!(anchor instanceof HTMLElement)) {
+    const handlePointerOut = (event: PointerEvent) => {
+      const anchor = getAnchorFromEvent(event.target);
+      if (!anchor) {
         return;
       }
 
@@ -49,12 +47,27 @@ export default function AnchorHoverSound() {
       }
     };
 
-    document.addEventListener("mouseover", handleMouseOver, true);
-    document.addEventListener("mouseout", handleMouseOut, true);
+    const handlePointerDown = (event: PointerEvent) => {
+      if (event.pointerType !== "touch") {
+        return;
+      }
+
+      const anchor = getAnchorFromEvent(event.target);
+      if (!anchor) {
+        return;
+      }
+
+      playHoverSound();
+    };
+
+    document.addEventListener("pointerover", handlePointerOver, true);
+    document.addEventListener("pointerout", handlePointerOut, true);
+    document.addEventListener("pointerdown", handlePointerDown, true);
 
     return () => {
-      document.removeEventListener("mouseover", handleMouseOver, true);
-      document.removeEventListener("mouseout", handleMouseOut, true);
+      document.removeEventListener("pointerover", handlePointerOver, true);
+      document.removeEventListener("pointerout", handlePointerOut, true);
+      document.removeEventListener("pointerdown", handlePointerDown, true);
     };
   }, [playHoverSound]);
 

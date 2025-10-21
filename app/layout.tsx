@@ -7,6 +7,8 @@ import FooterWrapper from "@/components/FooterWrapper";
 import AnchorHoverSound from "@/components/AnchorHoverSound";
 import Footer from "@/components/Footer";
 import ThemeToggle from "@/components/ThemeToggle";
+import SoundToggle from "@/components/SoundToggle";
+import { SoundSettingsProvider } from "@/components/SoundSettingsProvider";
 
 const ibm_plex_sans_condensed = IBM_Plex_Sans_Condensed({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
@@ -52,18 +54,25 @@ export default function RootLayout({
   return (
     <html lang="en" className={ibm_plex_sans_condensed.className}>
       <body className="antialiased tracking-tight font-ibm_plex_sans_condensed">
-        <AnchorHoverSound />
-        <ThemeToggle />
-        <NavBar />
-        <div className="min-h-screen flex flex-col md:pt-0 justify-between">
-          <main className="max-w-[60ch] px-8 md:px-0 mx-auto w-full space-y-6 md:pt-20 pt-10">
-            {children}
-          </main>
-          <FooterWrapper>
-            <Footer />
-          </FooterWrapper>
-          <Analytics />
-        </div>
+        <SoundSettingsProvider>
+          <AnchorHoverSound />
+          <div className="fixed bottom-6 right-6 z-40">
+            <div className="flex items-center gap-1 rounded-full bg-surface-strong backdrop-blur px-1 py-1">
+              <SoundToggle />
+              <ThemeToggle />
+            </div>
+          </div>
+          <NavBar />
+          <div className="min-h-screen flex flex-col md:pt-0 justify-between">
+            <main className="max-w-[60ch] px-8 md:px-0 mx-auto w-full space-y-6 md:pt-20 pt-10">
+              {children}
+            </main>
+            <FooterWrapper>
+              <Footer />
+            </FooterWrapper>
+            <Analytics />
+          </div>
+        </SoundSettingsProvider>
       </body>
     </html>
   );
