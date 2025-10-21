@@ -20,11 +20,11 @@ export function AnimatedName() {
       href="/"
       className="group relative inline-flex flex-col gap-1 text-neutral-600 transition-colors duration-300 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-500"
     >
-      <span
-
+      <button
+        className="group cursor-pointer relative inline-flex flex-col gap-1 text-neutral-600 transition-colors duration-300 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-500"
       >
         {NAME}
-      </span>
+      </button>
     </Link>
   );
 }

@@ -14,20 +14,20 @@ const components = {
     <h1 className="font-medium pt-12 mb-0" {...props} />
   ),
   h2: (props: HeadingProps) => (
-    <h2 className="text-black font-medium mt-8 mb-3" {...props} />
+    <h2 className="text-foreground font-medium mt-8 mb-3" {...props} />
   ),
   h3: (props: HeadingProps) => (
-    <h3 className="text-black font-medium" {...props} />
+    <h3 className="text-foreground font-medium" {...props} />
   ),
   h4: (props: HeadingProps) => <h4 className="font-medium" {...props} />,
   p: (props: ParagraphProps) => (
-    <p className="text-black leading-snug" {...props} />
+    <p className="text-foreground leading-snug" {...props} />
   ),
   ol: (props: ListProps) => (
-    <ol className="text-black list-decimal pl-5 space-y-2" {...props} />
+    <ol className="text-foreground list-decimal pl-5 space-y-2" {...props} />
   ),
   ul: (props: ListProps) => (
-    <ul className="text-black list-disc pl-5 space-y-1" {...props} />
+    <ul className="text-foreground list-disc pl-5 space-y-1" {...props} />
   ),
   li: (props: ListItemProps) => <li className="pl-1" {...props} />,
   em: (props: ComponentPropsWithoutRef<"em">) => (
@@ -38,7 +38,7 @@ const components = {
   ),
   a: ({ href, children, ...props }: AnchorProps) => {
     const className =
-      "text-blue-500 underline underline-offset-4 hover:text-blue-800 ";
+      "underline underline-offset-4 transition-colors";
     if (href?.startsWith("/")) {
       return (
         <Link href={href} className={className} {...props}>

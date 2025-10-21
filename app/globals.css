@@ -7,6 +7,7 @@
 }
 
 :root {
+  color-scheme: light;
   --sh-class: #7aa2f7;
   --sh-sign: #89ddff;
   --sh-string: #9ece6a;
@@ -15,6 +16,26 @@
   --sh-jsxliterals: #7aa2f7;
   --sh-property: #73daca;
   --sh-entity: #e0af68;
+  --background: #f5f5f5;
+  --foreground: #111827;
+  --muted: #6b7280;
+  --surface: rgba(15, 23, 42, 0.04);
+  --surface-strong: rgba(148, 163, 184, 0.16);
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --border: #d1d5db;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #09090b;
+  --foreground: #f8fafc;
+  --muted: #94a3b8;
+  --surface: rgba(148, 163, 184, 0.08);
+  --surface-strong: rgba(148, 163, 184, 0.16);
+  --accent: #60a5fa;
+  --accent-hover: #93c5fd;
+  --border: #1f2937;
 }
 
 html {
@@ -22,8 +43,55 @@ html {
   scrollbar-gutter: stable;
 }
 
+/* View Transitions API support */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+}
+
 body {
   text-rendering: optimizeLegibility;
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+a {
+  color: var(--accent);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+.text-foreground {
+  color: var(--foreground);
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+.bg-surface {
+  background-color: var(--surface);
+}
+
+.bg-surface-strong {
+  background-color: var(--surface-strong);
+}
+
+.border-border {
+  border-color: var(--border);
 }
 
 h1,
@@ -34,7 +102,7 @@ h4 {
 }
 
 pre {
-  background-color: #16161e;
+  background-color: #202126;
   border-radius: 0.5rem;
   overflow-x: auto;
   padding: 1rem;
@@ -56,7 +124,7 @@ code {
   font-size: 14px;
   padding: 0.01em 0.4em;
   border-radius: 0.3em;
-  background-color: var(--color-gray-100);
+  background-color: var(--surface);
 }
 
 pre code {
@@ -73,15 +141,16 @@ pre code > span .sh__token--identifier {
 
 code:not(pre code) span {
   font-weight: 500;
-  color: black !important;
+  color: var(--foreground) !important;
 }
 
 pre code span {
   font-weight: 500;
+  color: var(--foreground);
 }
 
 hr {
-  color: var(--color-gray-200);
+  color: var(--border);
 }
 
 /* Remove Safari input shadow on mobile */
