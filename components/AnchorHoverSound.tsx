@@ -18,6 +18,7 @@ export default function AnchorHoverSound() {
     };
 
     const handlePointerOver = (event: PointerEvent) => {
+      // Skip hover sounds for touch devices
       if (event.pointerType === "touch" || event.pointerType === "pen") {
         return;
       }
@@ -48,7 +49,8 @@ export default function AnchorHoverSound() {
     };
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (event.pointerType !== "touch") {
+      // Only play sound on touch/pen down
+      if (event.pointerType !== "touch" && event.pointerType !== "pen") {
         return;
       }
 
