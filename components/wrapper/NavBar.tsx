@@ -2,12 +2,24 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
 export default function NavBar() {
   const pathname = usePathname();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const update = () => setIsDarkMode(root.classList.contains("dark"));
+    update();
+
+    const observer = new MutationObserver(update);
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, []);
 
 
   const navItems = [
@@ -41,8 +53,9 @@ export default function NavBar() {
               </h2>
               {(hoveredItem === item.name || isActive) && (
                 <span
-                  className="absolute -bottom-[0.5px] left-0 w-full h-[0.5px] bg-black dark:bg-white transform origin-left"
+                  className="absolute -bottom-[0.5px] left-0 w-full h-[0.5px] transform origin-left"
                   style={{
+                    backgroundColor: isDarkMode ? "#ffffff" : "#000000",
                     animation:
                       hoveredItem === item.name
                         ? "expandWidth  0.2s ease-out forwards"
